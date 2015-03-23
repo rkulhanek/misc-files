@@ -54,8 +54,9 @@ set modelines=0
 
 " A few of these actually do things in regular vim, but they aren't interesting things.  So make them work like gedit so things work when I forget which editor I'm in.
 nmap <C-V> "+gP
-imap <C-V> <ESC><C-V>i
 vmap <C-X> "+x"
 vmap <C-C> "+y
 nmap <C-Z> u
 imap <C-Z> <ESC>ui
+nmap <SPACE> :noh<CR>
+
