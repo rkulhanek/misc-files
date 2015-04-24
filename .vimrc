@@ -50,7 +50,9 @@ hi DiffText cterm=bold ctermfg=white ctermbg=Red gui=none guifg=bg guibg=Red
 map <S-Up> <Nop>
 map <S-Down> <Nop>
 
+"Possible security issues, and I never use them anyway
 set modelines=0
+set nomodeline
 
 " A few of these actually do things in regular vim, but they aren't interesting things.  So make them work like gedit so things work when I forget which editor I'm in.
 nmap <C-V> "+gP
@@ -59,4 +61,16 @@ vmap <C-C> "+y
 nmap <C-Z> u
 imap <C-Z> <ESC>ui
 nmap <SPACE> :noh<CR>
+
+"Function keys switch between tabs.  F1 is the only one that normally does something, and I can type :help well enough without it.
+nnoremap <F1> 1gt
+nnoremap <F2> 2gt
+nnoremap <F3> 3gt
+nnoremap <F4> 4gt
+nnoremap <F5> 5gt
+nnoremap <F6> 6gt
+nnoremap <F7> 7gt
+nnoremap <F8> 8gt
+nnoremap <F9> 9gt
+nnoremap <F10> 10gt
 
