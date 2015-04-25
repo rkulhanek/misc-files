@@ -6,7 +6,6 @@ set nocompatible
 set autoindent
 set tabstop=4
 set shiftwidth=4
-"set textwidth=120
 set t_Co=256
 syntax on
 set number
@@ -73,4 +72,7 @@ nnoremap <F7> 7gt
 nnoremap <F8> 8gt
 nnoremap <F9> 9gt
 nnoremap <F10> 10gt
+
+"Automatic linebreaks for text files but not code
+autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal textwidth=70
 
