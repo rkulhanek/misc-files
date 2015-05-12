@@ -4,7 +4,7 @@ SHELL := /bin/bash
 MAKEFLAGS := -j
 CC := gcc
 CXX := g++
-DC := gcd
+DC := gdc
 
 ## Project-specific ##
 OBJ := foo.o bar.o
