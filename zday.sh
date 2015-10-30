@@ -2,10 +2,10 @@
 #Generates a running summary of the Z-Day
 #Terminate main process with SIGINT (^C) to kill both processes
 
-# DELAY must be at least 1 to stay within the API rules.  2 is nicer.
+# DELAY must be at least 1 to stay within the API rules.  3 is nicer.
 REGION=antarctica
 USER_AGENT=toneor_zday_stats
-DELAY=2
+DELAY=3
 
 
 WGET_ARGS="--user-agent=$USER_AGENT --no-verbose"
@@ -58,7 +58,7 @@ cat <<ENDHEREDOC
 	</head>
 	<body>
 		<p>Last updated $TIMESTAMP</p>
-		<p>All counts are in millions of <span class='strike'>brains</span> people</p>
+		<p>All counts are in millions of brains</p>
 		<table>
 			<thead><tr><td>Name</td><td>Zombies</td><td>Living</td><td>Dead</td><td>Zombies per-capita</td><td>Policy</td></tr></thead><tbody>
 ENDHEREDOC
@@ -85,7 +85,6 @@ terminate() {
 if [ "display" == "$1" ]; then
 	while true; do
 		update_display > stats.html
-		cp stats.html git/misc-files/stats.html
 		sleep $DELAY
 	done
 else
