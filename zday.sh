@@ -22,15 +22,6 @@ parse_row() {
 	echo "$ZOMBIES ,$NAME,$ZACTION,$SURVIVORS,$DEAD"
 }
 
-fetch_data() {
-	wget $WGET_ARGS "$PREFIX?region=$REGION&q=nations+zombie" -Oregion
-	nations=$(grep '<NATIONS>' < region | sed 's/<[^>]*>//g; s/:/ /g')
-	for i in $nations; do
-		wget $WGET_ARGS "$PREFIX?nation=$i&q=zombie" -O "nations/$i"
-		sleep $DELAY
-	done
-}
-
 update_display() {
 	nations=$(ls nations/)
 
@@ -42,6 +33,11 @@ cat <<ENDHEREDOC
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+		<meta http-equiv="cache-control" content="max-age=0" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="expires" content="0" />
+		<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+		<meta http-equiv="pragma" content="no-cache" />
 		<title>Nationstates Z-Day stats</title>
 		<style type="text/css">
 			tr.even { background-color: #DD8888 }
@@ -66,8 +62,8 @@ ENDHEREDOC
 	for i in $nations; do
 		parse_row nations/$i
 	done | sort -nr \
-	| awk '-F,' '{ printf("<tr class=%c%s%c><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%.0f%%</td><td>%s</td></tr>\n", 
-			34, ((NR % 2) ? "even" : "odd"), 34, $2,$1,$4,$5,($1/($1+$4+$5)) * 100.0,$3) }'
+	| awk '-F,' '{ printf("<tr class=%c%s%c><td><a href=%chttp://www.nationstates.net/nation=%s%c>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%.0f%%</td><td>%s</td></tr>\n", 
+			34, ((NR % 2) ? "even" : "odd"), 34, 34, $2, 34, $2,$1,$4,$5,($1/($1+$4+$5)) * 100.0,$3) }'
 
 cat <<ENDHEREDOC
 			</tbody>
@@ -77,24 +73,20 @@ cat <<ENDHEREDOC
 ENDHEREDOC
 }
 
-terminate() {
-	kill -TERM "$child"
-	exit 0
+fetch_data() {
+	wget $WGET_ARGS "$PREFIX?region=$REGION&q=nations+zombie" -Oregion
+	nations=$(grep '<NATIONS>' < region | sed 's/<[^>]*>//g; s/:/ /g')
+
+	for i in $nations; do
+		wget $WGET_ARGS "$PREFIX?nation=$i&q=zombie" -O "nations/$i"
+		sleep $DELAY
+		update_display > stats.html
+	done
 }
 
-if [ "display" == "$1" ]; then
-	while true; do
-		update_display > stats.html
-		sleep $DELAY
-	done
-else
-	mkdir -p nations
-	./zday.sh display &
-	child=$!
-	trap terminate SIGINT
-
-	while true; do
-		fetch_data
-	done
-fi
+mkdir -p nations
+while true; do
+	echo "--------------------------------------------"
+	fetch_data
+done
 
