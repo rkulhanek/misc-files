@@ -51,8 +51,8 @@ hi clear SpellBad
 hi SpellBad cterm=underline gui=undercurl ctermfg=red guisp=red
 
 " Since I have never once used this feature intentionally and Pg(Up|Down) do the same thing...
-map <S-Up> <Nop>
-map <S-Down> <Nop>
+noremap <S-Up> <Nop>
+noremap <S-Down> <Nop>
 
 " Possible security issues, and I never use them anyway
 set modelines=0
@@ -62,19 +62,19 @@ set nomodeline
 " So make them work like gedit so things work when I forget which editor I'm in.
 
 "TODO: Maybe only remap <C-V> in insert mode.  Or make <A-V> do visual block selection instead
-nmap <C-V> "+gP
-vmap <C-X> "+x"
-vmap <C-C> "+y
+nnoremap <C-V> "+gP
+vnoremap <C-X> "+x"
+vnoremap <C-C> "+y
 if has('gui_running')
 	" If running from a terminal, I want to be able to get back to the command
 	" line.  But for gvim, that's useless and I'd rather have increased
 	" compatability with e.g. gedit
-	nmap <C-Z> u
+	nnoremap <C-Z> u
 endif
 " But it's fine if I need to go to normal mode to do so.  And in insert mode,
 " it's nice to have a quick undo command
-imap <C-Z> <ESC>ui
-nmap <SPACE> :noh<CR>
+inoremap <C-Z> <ESC>ui
+nnoremap <SPACE> :noh<CR>
 
 " Function keys switch between tabs.  F1 is the only one that normally does
 " something, and I can type :help well enough without it.
@@ -91,6 +91,7 @@ nnoremap <F10> 10gt
 
 nnoremap <F12> :tabnew<CR>:make<CR>
 
+syntax manual
 let g:LargeFile = 1024 * 1024 * 10
 autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || -2 == f | call LargeFile() | else | call SmallFile() | endif
 
@@ -98,10 +99,12 @@ function SmallFile()
 	" Automatic linebreaks and spellchecking for text files but not code
 	autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal textwidth=70
 	autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal spell spelllang=en_us
+	autocmd BufRead,BufNewFile * setlocal syntax=ON
 endfunction
 
 function LargeFile()
-	syntax off
+	" syntax highlighting is slow
+	autocmd BufRead,BufNewFile * setlocal syntax=OFF
 endfunction
 
 " Make ctrl-a work like in bash. ctrl-e already does.

@@ -15,8 +15,8 @@ OPTIMIZE_TYPE := NORMAL
 
 #NOTE: -g and -flto don't play well together
 OPTIMIZE_NONE := -O0 -g
-OPTIMIZE_NORMAL := -O3 -DNDEBUG -flto -fwhole-program -fno-math-errno
-OPTIMIZE_UNSAFE := $(OPTIMIZE_NORMAL) -ffast-math
+OPTIMIZE_NORMAL := -O3 -DNDEBUG -flto -fwhole-program -fno-math-errno -march=native
+OPTIMIZE_UNSAFE := $(OPTIMIZE_NORMAL) -ffast-math -march=native
 
 ALLFLAGS := $(OPTIMIZE_$(OPTIMIZE_TYPE)) -Wall -Wno-unused-result
 LDFLAGS := $(OPTIMIZE_$(OPTIMIZE_TYPE)) -lm
