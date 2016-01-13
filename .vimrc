@@ -60,6 +60,8 @@ set nomodeline
 
 " A few of these actually do things in regular vim, but they aren't interesting things.
 " So make them work like gedit so things work when I forget which editor I'm in.
+
+"TODO: Maybe only remap <C-V> in insert mode.  Or make <A-V> do visual block selection instead
 nmap <C-V> "+gP
 vmap <C-X> "+x"
 vmap <C-C> "+y
@@ -87,9 +89,20 @@ nnoremap <F8> 8gt
 nnoremap <F9> 9gt
 nnoremap <F10> 10gt
 
-" Automatic linebreaks and spellchecking for text files but not code
-autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal textwidth=70
-autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal spell spelllang=en_us
+nnoremap <F12> :tabnew<CR>:make<CR>
+
+let g:LargeFile = 1024 * 1024 * 10
+autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || -2 == f | call LargeFile() | else | call SmallFile() | endif
+
+function SmallFile()
+	" Automatic linebreaks and spellchecking for text files but not code
+	autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal textwidth=70
+	autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal spell spelllang=en_us
+endfunction
+
+function LargeFile()
+	syntax off
+endfunction
 
 " Make ctrl-a work like in bash. ctrl-e already does.
 cnoremap <C-a> <Home>
