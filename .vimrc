@@ -92,28 +92,28 @@ nnoremap <F10> 10gt
 nnoremap <F12> :tabnew<CR>:make<CR>
 
 syntax manual
-let g:LargeFile = 1024 * 1024 * 10
 
-augroup FileSize
-	autocmd!
-	autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || -2 == f | call LargeFile() | else | call SmallFile() | endif
-augroup END
-
-function SmallFile()
-	" Automatic linebreaks and spellchecking for text files but not code
-	augroup FileSize
-		autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal textwidth=70
-		autocmd BufRead,BufNewFile *.txt,*.tex,*.notes setlocal spell spelllang=en_us
-		autocmd BufRead,BufNewFile * setlocal syntax=ON
-	augroup END
+function FileSize()
+	let b:filesize = getfsize(expand("<afile>"))
+	if b:filesize > 1024 * 1024 * 10 || -2 == b:filesize
+		let b:filesize = "large"
+		set syntax=OFF
+	else
+		let b:filesize = "small"
+		if "" != &filetype
+			set syntax=ON
+		endif
+	endif
 endfunction
 
-function LargeFile()
-	" syntax highlighting is slow
-	augroup FileSize
-		autocmd BufRead,BufNewFile * setlocal syntax=OFF
-	augroup END
+function TextFile()
+	if "small" == b:filesize
+		setlocal textwidth=70 spell spelllang=en_us
+	endif
 endfunction
+
+autocmd BufRead * call FileSize()
+autocmd BufRead,BufNewFile *.txt,*.tex,*.notes call TextFile()
 
 " Make ctrl-a work like in bash. ctrl-e already does.
 cnoremap <C-a> <Home>
