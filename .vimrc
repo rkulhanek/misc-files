@@ -112,7 +112,7 @@ function TextFile()
 	endif
 endfunction
 
-autocmd BufRead * call FileSize()
+autocmd BufRead,BufNewFile * call FileSize()
 autocmd BufRead,BufNewFile *.txt,*.tex,*.notes call TextFile()
 
 " Make ctrl-a work like in bash. ctrl-e already does.
