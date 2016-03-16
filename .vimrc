@@ -10,6 +10,10 @@ set t_Co=256
 syntax on
 set number
 
+" Disable screen flashing on error by making all bells visual, then making them do nothing. (At least, I think that's how this works.)
+set visualbell
+set t_vb=
+
 " Syntax highlighting
 hi Statement ctermfg=white
 hi Delimiter ctermfg=white
@@ -62,19 +66,28 @@ set nomodeline
 " So make them work like gedit so things work when I forget which editor I'm in.
 
 "TODO: Maybe only remap <C-V> in insert mode.  Or make <A-V> do visual block selection instead
-nnoremap <C-V> "+gP
-vnoremap <C-X> "+x"
-vnoremap <C-C> "+y
-if has('gui_running')
+"nnoremap <C-V> "+gP
+"vnoremap <C-X> "+x"
+"vnoremap <C-C> "+y
+"if has('gui_running')
 	" If running from a terminal, I want to be able to get back to the command
 	" line.  But for gvim, that's useless and I'd rather have increased
 	" compatability with e.g. gedit
-	nnoremap <C-Z> u
-endif
+"	nnoremap <C-Z> u
+"endif
 " But it's fine if I need to go to normal mode to do so.  And in insert mode,
 " it's nice to have a quick undo command
 inoremap <C-Z> <ESC>ui
 nnoremap <SPACE> :noh<CR>
+
+" 0 is the default vi yank register.  * is the 'highlighted text with mouse (or visual mode)' register.  + is the select 'copy' from a menu register
+set mouse=a
+nnoremap <MiddleMouse> :set paste<CR>"*p<Esc>l:set nopaste<CR>
+inoremap <MiddleMouse> <Esc>:set paste<CR>"*p<Esc>l:set nopaste<CR>i
+
+noremap <2-MiddleMouse> <Nop>
+noremap <3-MiddleMouse> <Nop>
+noremap <4-MiddleMouse> <Nop>
 
 " Function keys switch between tabs.  F1 is the only one that normally does
 " something, and I can type :help well enough without it.
