@@ -81,6 +81,7 @@ inoremap <C-Z> <ESC>ui
 nnoremap <SPACE> :noh<CR>
 
 " 0 is the default vi yank register.  * is the 'highlighted text with mouse (or visual mode)' register.  + is the select 'copy' from a menu register
+" If +xterm_clipboard isn't compiled in, this won't work right over ssh. (vim-gtk package has it)
 set mouse=a
 nnoremap <MiddleMouse> :set paste<CR>"*p<Esc>l:set nopaste<CR>
 inoremap <MiddleMouse> <Esc>:set paste<CR>"*p<Esc>l:set nopaste<CR>i
