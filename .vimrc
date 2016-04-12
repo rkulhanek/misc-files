@@ -126,8 +126,23 @@ function TextFile()
 	endif
 endfunction
 
+function SetFolds(usesyntax)
+	if "small" == b:filesize
+		" TODO: foldmethod should be indent for python and any other languages where the syntax file doesn't define folds.
+		" Figure out how to grep the syntax files for "fold" from vimrc.
+		if 0 == a:usesyntax
+			setlocal foldmethod=indent
+		else
+			setlocal foldmethod=syntax
+		endif
+		norm zR
+	endif
+endfunction
+
 autocmd BufRead,BufNewFile * call FileSize()
 autocmd BufRead,BufNewFile *.txt,*.tex,*.notes call TextFile()
+autocmd BufRead,BufNewFile * call SetFolds(1)
+autocmd BufRead,BufNewFile *.py call SetFolds(0)
 
 " Make ctrl-a work like in bash. ctrl-e already does.
 cnoremap <C-a> <Home>
