@@ -6,6 +6,7 @@ set nocompatible
 set autoindent
 set tabstop=4
 set shiftwidth=4
+set copyindent
 set t_Co=256
 syntax on
 set number
@@ -139,10 +140,86 @@ function SetFolds(usesyntax)
 	endif
 endfunction
 
+function Python()
+	" This is modified from Jon Franklin's python_fn plugin.
+	" TODO: Ideally, I want [[, and ]] to act as follows:
+	" Define a scope to include the line that starts it, e.g. def foo():, if foo:, for foo in bar:
+	" [[ jumps to the first line of the current scope
+	" ]] jumps to the line *after* the last line of the current scope.  Or possibly to the last line itself.
+	"
+	" Exceptions:
+	" If I'm on the first line of a scope and hit [[, it goes to the first line of the *previous* scope.
+
+	" Go to a block boundary (-1: previous, 1: next)
+	" Returns line number
+	function! PythonBoB(line, direction)
+		let ln = a:line
+		let ind = indent(ln)
+		let mark = ln
+		let indent_valid = strlen(getline(ln))
+
+		" If we jump backwards from the first line of a function of class scope, we override
+		" the normal behavior and instead of jumping to the start of the scope, we jump to the
+		" start of the *previous* scope.  And if we jump forward, we jump to the beginning of the next scope
+		let re_def = '^\s*\(def\|class\) .*:\s*\(#.*\)*$'
+		"let re = ':\s*$' " uncomment to make this behavior also kick in for if, for, etc.
+		if (-1 != match(getline(a:line), re_def))
+			if 1 == a:direction
+				let n = search(re_def, 'W')
+			else
+				let n = search(re_def, 'Wb')
+			endif
+			if 0 == n
+				let n = a:line "do nothing
+			endif
+			return n
+		endif
+
+		" We're inside the initial declarations, of the if __main__ bit.
+		" Find the next class/def or EOF, respectively.
+		if 0 == indent(a:line)
+			let n = search(re_def, 'Wb')
+			if 0 != n && -1 == a:direction
+				return n " We're NOT at the beginning. We're at a blank line in the middle somewhere. Go to the previous class/def
+			endif
+			return search(re_def, 'W')
+		endif
+
+		" We're inside a scope.  Jump to beginning or end
+		let ln = ln + a:direction
+		while ((ln >= 1) && (ln <= line('$')))
+			if (match(getline(ln), "^\\s*#") == -1)
+				if (!indent_valid)
+					let indent_valid = strlen(getline(ln))
+					let ind = indent(ln)
+					let mark = ln
+				else
+					if (strlen(getline(ln)))
+						if (indent(ln) < ind)
+							return mark
+						endif
+						let mark = ln
+					endif
+				endif
+			endif
+			let ln = ln + a:direction
+		endwhile
+	endfunction
+	
+	map  [[   :PBoB<CR>
+	vmap [[   :<C-U>PBOB<CR>m'gv``
+	map  ]]   :PEoB<CR>
+	vmap ]]   :<C-U>PEoB<CR>m'gv``
+
+	:com! PBoB execute "normal ".PythonBoB(line('.'), -1)."G"
+	:com! PEoB execute "normal ".PythonBoB(line('.'), 1)."G"
+endfunction
+
 autocmd BufRead,BufNewFile * call FileSize()
 autocmd BufRead,BufNewFile *.txt,*.tex,*.notes call TextFile()
 autocmd BufRead,BufNewFile * call SetFolds(1)
 autocmd BufRead,BufNewFile *.py call SetFolds(0)
+autocmd BufRead,BufNewFile *.py call Python()
 
 " Make ctrl-a work like in bash. ctrl-e already does.
 cnoremap <C-a> <Home>
