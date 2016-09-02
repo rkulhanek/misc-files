@@ -123,7 +123,7 @@ endfunction
 
 function TextFile()
 	if "small" == b:filesize
-		setlocal textwidth=70 spell spelllang=en_us
+		setlocal spell spelllang=en_us
 	endif
 endfunction
 
@@ -136,7 +136,8 @@ function SetFolds(usesyntax)
 		else
 			setlocal foldmethod=syntax
 		endif
-		norm zR
+		
+		set foldlevel=99
 	endif
 endfunction
 
@@ -210,6 +211,8 @@ function Python()
 	vmap [[   :<C-U>PBOB<CR>m'gv``
 	map  ]]   :PEoB<CR>
 	vmap ]]   :<C-U>PEoB<CR>m'gv``
+
+	" TODO: Could I set % to work like ]] if the current line contains a trailing /: *$/ and [[ otherwise?
 
 	:com! PBoB execute "normal ".PythonBoB(line('.'), -1)."G"
 	:com! PEoB execute "normal ".PythonBoB(line('.'), 1)."G"
