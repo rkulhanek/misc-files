@@ -43,9 +43,9 @@ if [ ! -t 0 ]; then
     PROMPT=''
 fi
 
-echo -n "$PROMPT"
 #VARNAMES=()
-while read LINE; do
+while read -p "$PROMPT" -e LINE; do
+	history -s "$LINE"
     case "$LINE" in
         "quit" | "q" )
             exit 0;;
@@ -69,6 +69,5 @@ while read LINE; do
             eval awk "\"BEGIN{OFMT=\\\"$FMT\\\"; print($LINE)}\""
         ;;
     esac
-    echo -n "$PROMPT"
 done
 
