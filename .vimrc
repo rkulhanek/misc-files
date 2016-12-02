@@ -223,6 +223,7 @@ autocmd BufRead,BufNewFile *.txt,*.tex,*.notes call TextFile()
 autocmd BufRead,BufNewFile * call SetFolds(1)
 autocmd BufRead,BufNewFile *.py call SetFolds(0)
 autocmd BufRead,BufNewFile *.py call Python()
+autocmd BufRead,BufNewFile *.lua call SetFolds(0)
 
 " Make ctrl-a work like in bash. ctrl-e already does.
 cnoremap <C-a> <Home>
