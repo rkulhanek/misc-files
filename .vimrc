@@ -8,7 +8,6 @@ set tabstop=4
 set shiftwidth=4
 set copyindent
 set t_Co=256
-syntax on
 set number
 
 " Disable screen flashing on error by making all bells visual, then making them do nothing. (At least, I think that's how this works.)
@@ -16,44 +15,47 @@ set visualbell
 set t_vb=
 
 " Syntax highlighting
-hi Statement ctermfg=white
-hi Delimiter ctermfg=white
-hi Special ctermfg=white
-hi PreProc ctermfg=white
-hi Constant ctermfg=white
-hi Search ctermfg=black ctermbg=yellow
-hi Visual ctermfg=black ctermbg=white
-hi Comment ctermfg=darkgreen
-hi Type ctermfg=white
-hi Identifier ctermfg=white
-hi Normal ctermfg=white
-hi String ctermfg=blue
+function Highlight()
+	let g:syntax_cmd = "skip" " Keeps it from overriding my color scheme with the defaults
+	hi Statement ctermfg=white
+	hi Delimiter ctermfg=white
+	hi Special ctermfg=white
+	hi PreProc ctermfg=white
+	hi Constant ctermfg=white
+	hi Search ctermfg=black ctermbg=yellow
+	hi Visual ctermfg=black ctermbg=white
+	hi Comment ctermfg=darkgreen
+	hi Type ctermfg=white
+	hi Identifier ctermfg=white
+	hi Normal ctermfg=white
+	hi String ctermfg=blue
 
-hi texStatement ctermfg=blue
-hi texDelimiter ctermfg=blue
-hi texBeginEnd ctermfg=blue
-hi texSection ctermfg=blue
-hi texDocType ctermfg=blue
-hi texNewCmd ctermfg=blue
-hi texSpecialChar ctermfg=blue
+	hi texStatement ctermfg=blue
+	hi texDelimiter ctermfg=blue
+	hi texBeginEnd ctermfg=blue
+	hi texSection ctermfg=blue
+	hi texDocType ctermfg=blue
+	hi texNewCmd ctermfg=blue
+	hi texSpecialChar ctermfg=blue
 
-hi texInputFile ctermfg=white
-hi texInputFileOpt ctermfg=white
+	hi texInputFile ctermfg=white
+	hi texInputFileOpt ctermfg=white
 
-hi texOption ctermfg=cyan
-hi texTypeStyle ctermfg=cyan
-hi texTypeSize ctermfg=cyan
-hi texMathZoneV ctermfg=blue
-hi texMathZoneW ctermfg=blue
-hi texMathOper ctermfg=blue
+	hi texOption ctermfg=cyan
+	hi texTypeStyle ctermfg=cyan
+	hi texTypeSize ctermfg=cyan
+	hi texMathZoneV ctermfg=blue
+	hi texMathZoneW ctermfg=blue
+	hi texMathOper ctermfg=blue
 
-hi DiffAdd cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
-hi DiffDelete cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
-hi DiffChange cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
-hi DiffText cterm=bold ctermfg=white ctermbg=Red gui=none guifg=bg guibg=Red
+	hi DiffAdd cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
+	hi DiffDelete cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
+	hi DiffChange cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
+	hi DiffText cterm=bold ctermfg=white ctermbg=Red gui=none guifg=bg guibg=Red
 
-hi clear SpellBad
-hi SpellBad cterm=underline gui=undercurl ctermfg=red guisp=red
+	hi clear SpellBad
+	hi SpellBad cterm=underline gui=undercurl ctermfg=red guisp=red
+endfunction
 
 " Since I have never once used this feature intentionally and Pg(Up|Down) do the same thing...
 noremap <S-Up> <Nop>
@@ -108,7 +110,7 @@ nnoremap <F12> :tabnew<CR>:make<CR>
 
 syntax manual
 
-function FileSize()
+function! FileSize()
 	let b:filesize = getfsize(expand("<afile>"))
 	if b:filesize > 1024 * 1024 * 10 || -2 == b:filesize
 		let b:filesize = "large"
@@ -121,13 +123,13 @@ function FileSize()
 	endif
 endfunction
 
-function TextFile()
+function! TextFile()
 	if "small" == b:filesize
 		setlocal spell spelllang=en_us
 	endif
 endfunction
 
-function SetFolds(usesyntax)
+function! SetFolds(usesyntax)
 	if "small" == b:filesize
 		" TODO: foldmethod should be indent for python and any other languages where the syntax file doesn't define folds.
 		" Figure out how to grep the syntax files for "fold" from vimrc.
@@ -141,7 +143,7 @@ function SetFolds(usesyntax)
 	endif
 endfunction
 
-function Python()
+function! Python()
 	" This is modified from Jon Franklin's python_fn plugin.
 	" TODO: Ideally, I want [[, and ]] to act as follows:
 	" Define a scope to include the line that starts it, e.g. def foo():, if foo:, for foo in bar:
@@ -224,6 +226,9 @@ autocmd BufRead,BufNewFile * call SetFolds(1)
 autocmd BufRead,BufNewFile *.py call SetFolds(0)
 autocmd BufRead,BufNewFile *.py call Python()
 autocmd BufRead,BufNewFile *.lua call SetFolds(0)
+
+call Highlight()
+syntax on
 
 " Make ctrl-a work like in bash. ctrl-e already does.
 cnoremap <C-a> <Home>
