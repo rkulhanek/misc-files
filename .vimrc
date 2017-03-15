@@ -44,9 +44,13 @@ function Highlight()
 	hi texOption ctermfg=cyan
 	hi texTypeStyle ctermfg=cyan
 	hi texTypeSize ctermfg=cyan
-	hi texMathZoneV ctermfg=blue
-	hi texMathZoneW ctermfg=blue
+	hi texMathZoneV cterm=bold
+	hi link texMathZoneW texMathZoneV
+	hi link texMathZoneX texMathZoneV
+	hi link texMathZoneY texMathZoneV
 	hi texMathOper ctermfg=blue
+
+	hi htmlH1 ctermfg=blue
 
 	hi DiffAdd cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
 	hi DiffDelete cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
@@ -55,6 +59,10 @@ function Highlight()
 
 	hi clear SpellBad
 	hi SpellBad cterm=underline gui=undercurl ctermfg=red guisp=red
+	"hi SpellCap cterm=bold ctermbg=black gui=undercurl ctermfg=blue
+	"hi SpellLocal cterm=bold ctermbg=black gui=undercurl ctermfg=blue
+	hi SpellCap ctermbg=black ctermfg=white
+	hi SpellLocal ctermbg=black ctermfg=white
 endfunction
 
 " Since I have never once used this feature intentionally and Pg(Up|Down) do the same thing...
@@ -220,12 +228,30 @@ function! Python()
 	:com! PEoB execute "normal ".PythonBoB(line('.'), 1)."G"
 endfunction
 
+function! MarkdownRegions()
+    " $$ block math $$
+    syn region math start=/\$\$/ end=/\$\$/
+    " $ inline math $
+    syn match math_block '\$[^$]\(\\.\|[^$]\)*\$'
+    " BUG: $x_i$ _{ $x_i$ doesn't highlight the second x_i.
+    "      $x_i$ _{ $$x_i$$ considers the block to start after
+    "      the *second* $$. Closing the { doesn't help.
+
+    " ``` code blocks in github-flavored markdown ```
+    syn region github_code_block start='```' end='```'
+
+    hi link math texMathZoneY
+    hi link math_block texMathZoneX
+    hi github_code_block cterm=bold
+endfunction
+
 autocmd BufRead,BufNewFile * call FileSize()
 autocmd BufRead,BufNewFile *.txt,*.tex,*.notes call TextFile()
 autocmd BufRead,BufNewFile * call SetFolds(1)
 autocmd BufRead,BufNewFile *.py call SetFolds(0)
 autocmd BufRead,BufNewFile *.py call Python()
 autocmd BufRead,BufNewFile *.lua call SetFolds(0)
+autocmd BufRead,BufNewFile *.md call MarkdownRegions()
 
 call Highlight()
 syntax on
