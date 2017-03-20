@@ -44,13 +44,13 @@ function Highlight()
 	hi texOption ctermfg=cyan
 	hi texTypeStyle ctermfg=cyan
 	hi texTypeSize ctermfg=cyan
-	hi texMathZoneV cterm=bold
+	hi texMathZoneV cterm=bold gui=bold
 	hi link texMathZoneW texMathZoneV
 	hi link texMathZoneX texMathZoneV
 	hi link texMathZoneY texMathZoneV
 	hi texMathOper ctermfg=blue
 
-	hi htmlH1 ctermfg=blue
+	hi htmlH1 ctermfg=blue guifg=blue gui=bold
 
 	hi DiffAdd cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
 	hi DiffDelete cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
@@ -115,6 +115,9 @@ nnoremap <F9> 9gt
 nnoremap <F10> 10gt
 
 nnoremap <F12> :tabnew<CR>:make<CR>
+
+" Uncomment when debugging
+"noremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 syntax manual
 
@@ -246,7 +249,7 @@ function! MarkdownRegions()
 endfunction
 
 autocmd BufRead,BufNewFile * call FileSize()
-autocmd BufRead,BufNewFile *.txt,*.tex,*.notes call TextFile()
+autocmd BufRead,BufNewFile *.txt,*.tex,*.notes,*.md call TextFile()
 autocmd BufRead,BufNewFile * call SetFolds(1)
 autocmd BufRead,BufNewFile *.py call SetFolds(0)
 autocmd BufRead,BufNewFile *.py call Python()
