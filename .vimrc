@@ -15,7 +15,7 @@ set visualbell
 set t_vb=
 
 " Syntax highlighting
-function Highlight()
+function! Highlight()
 	let g:syntax_cmd = "skip" " Keeps it from overriding my color scheme with the defaults
 	hi Statement ctermfg=white
 	hi Delimiter ctermfg=white
@@ -114,7 +114,15 @@ nnoremap <F8> 8gt
 nnoremap <F9> 9gt
 nnoremap <F10> 10gt
 
-nnoremap <F12> :tabnew<CR>:make<CR>
+function! MakeTex()
+	tabnew
+	make
+	"if 1 == line('$') && '' == getline(1)
+		q
+	"endif
+endfunction
+
+nnoremap <F12> :call MakeTex()<CR>
 
 " Uncomment when debugging
 "noremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
