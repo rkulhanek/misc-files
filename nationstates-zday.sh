@@ -10,7 +10,7 @@
 REGION=antarctica
 USER_AGENT=toneor_zday_stats
 DELAY=9 # Should be at least 3 to both stay within rate limits and not risk stressing the server on a busy day
-UPLOAD_PERIOD=15 # will do a full update once every $UPLOAD_PERIOD minutes
+UPLOAD_PERIOD=30 # will do a full update once every $UPLOAD_PERIOD minutes
 
 WGET_ARGS="--user-agent=$USER_AGENT --no-verbose"
 PREFIX='https://www.nationstates.net/cgi-bin/api.cgi'
