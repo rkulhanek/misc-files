@@ -65,10 +65,6 @@ function! Highlight()
 	hi SpellLocal ctermbg=black ctermfg=white
 endfunction
 
-" Since I have never once used this feature intentionally and Pg(Up|Down) do the same thing...
-noremap <S-Up> <Nop>
-noremap <S-Down> <Nop>
-
 " Possible security issues, and I never use them anyway
 set modelines=0
 set nomodeline
@@ -76,19 +72,6 @@ set nomodeline
 " A few of these actually do things in regular vim, but they aren't interesting things.
 " So make them work like gedit so things work when I forget which editor I'm in.
 
-"TODO: Maybe only remap <C-V> in insert mode.  Or make <A-V> do visual block selection instead
-"nnoremap <C-V> "+gP
-"vnoremap <C-X> "+x"
-"vnoremap <C-C> "+y
-"if has('gui_running')
-	" If running from a terminal, I want to be able to get back to the command
-	" line.  But for gvim, that's useless and I'd rather have increased
-	" compatability with e.g. gedit
-"	nnoremap <C-Z> u
-"endif
-" But it's fine if I need to go to normal mode to do so.  And in insert mode,
-" it's nice to have a quick undo command
-inoremap <C-Z> <ESC>ui
 nnoremap <SPACE> :noh<CR>
 
 " 0 is the default vi yank register.  * is the 'highlighted text with mouse (or visual mode)' register.  + is the select 'copy' from a menu register
