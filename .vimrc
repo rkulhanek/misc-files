@@ -86,6 +86,8 @@ noremap <4-MiddleMouse> <Nop>
 
 " Function keys switch between tabs.  F1 is the only one that normally does
 " something, and I can type :help well enough without it.
+" Also disabling F1 in insert mode, because I keep bumping it by accident.
+inoremap <F1> <Nop>
 nnoremap <F1> 1gt
 nnoremap <F2> 2gt
 nnoremap <F3> 3gt
