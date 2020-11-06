@@ -3,10 +3,10 @@ confidence=
 enable=all
 
 # By default, pylint considers actual errors to be on the same level as not using the stupid style conventions of the PEP8 people.
-disable=mixed-indentation, line-too-long, invalid-name, missing-docstring, multiple-imports, 
-	bad-whitespace, bad-continuation, global-statement, trailing-newline, 
-	misplaced-comparison-constant, unidiomatic-typecheck, multiple-statements, trailing-newlines,
-	too-few-public-methods, too-many-instance-attributes, fixme,
+disable=line-too-long, invalid-name, missing-docstring, multiple-imports, 
+	bad-whitespace, bad-continuation, global-statement, trailing-newlines, 
+	misplaced-comparison-constant, unidiomatic-typecheck, multiple-statements,
+	too-few-public-methods, too-many-instance-attributes, fixme, broad-except,
 	wrong-import-order, # I do tend to prefer putting imports in the order pep8 likes, but it shouldn't be a warning
 	import-error, # Other tools will catch genuine import errors. pylint has false positives
 	trailing-whitespace, # Gets lines with a extra space at the end, but also gets empty lines that are indented to the same level as the surrounding ones
@@ -18,6 +18,7 @@ disable=mixed-indentation, line-too-long, invalid-name, missing-docstring, multi
 	locally-disabled, suppressed-message, # "The programmer disabled pylint on this line. Clearly, that means they want TWO messages"
 	too-many-branches, # 13 non-nested branches in one function! The horror!
 	too-many-locals, # But at least it's better than *15* locals! Who can even count that high?
+	too-many-return-statements, too-many-arguments, too-many-statements, # 7, 5, and 50 respectively
 
 # Not disabling these:
 # cell-var-from-loop. Lots of false positives, but catching the rare true positive is worth it for this one; this can lead to horribly subtle bugs.
