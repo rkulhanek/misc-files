@@ -3,7 +3,7 @@ confidence=
 enable=all
 
 # By default, pylint considers actual errors to be on the same level as not using the stupid style conventions of the PEP8 people.
-disable=line-too-long, invalid-name, missing-docstring, multiple-imports, 
+disable=mixed-indentation, line-too-long, invalid-name, missing-docstring, multiple-imports, 
 	bad-whitespace, bad-continuation, global-statement, trailing-newlines, 
 	misplaced-comparison-constant, unidiomatic-typecheck, multiple-statements,
 	too-few-public-methods, too-many-instance-attributes, fixme, broad-except,
