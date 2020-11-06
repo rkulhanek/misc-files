@@ -13,9 +13,8 @@ define run_check
 	$(call color,$(YELLOW),$1)
 endef
 
-all: math.pdf aggregate_score bif2sample_json python_check
-
-python_files=model util modelC model_realval
+all: python_check
+python_files=$(basename $(shell find . -name '*.py'))
 python_check: $(addprefix .python_check/,$(python_files))
 
 .python_check/%: %.py
