@@ -405,6 +405,11 @@ function! AmsMathHighlight()
 	endfor
 endfunction
 
+" For working with coding styles written by vile heathens
+function! SpaceIndent()
+	set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
+endfunction
+
 autocmd BufRead,BufNewFile * call FileSize()
 autocmd BufRead,BufNewFile *.txt,*.tex,*.notes,*.md call TextFile()
 autocmd BufRead,BufNewFile *.tex call AmsMathHighlight()
@@ -420,3 +425,6 @@ syntax on
 " Make ctrl-a work like in bash. ctrl-e already does.
 cnoremap <C-a> <Home>
 
+" Make tab completion work similarly to how it does in bash
+set wildmode=longest,list,full
+set wildmenu
