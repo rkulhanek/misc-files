@@ -19,6 +19,8 @@ disable=mixed-indentation, line-too-long, invalid-name, missing-docstring, multi
 	too-many-branches, # 13 non-nested branches in one function! The horror!
 	too-many-locals, # But at least it's better than *15* locals! Who can even count that high?
 	too-many-return-statements, too-many-arguments, too-many-statements, # 7, 5, and 50 respectively
+	exec-used, # If I use exec, it's obviously intentional
+	no-self-use, # Too often, a function is *required* to take self for API reasons, even if it doesn't use it.
 
 # Not disabling these:
 # cell-var-from-loop. Lots of false positives, but catching the rare true positive is worth it for this one; this can lead to horribly subtle bugs.
