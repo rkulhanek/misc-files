@@ -52,10 +52,10 @@ function! Highlight()
 
 	hi htmlH1 ctermfg=blue guifg=blue gui=bold
 
-	hi DiffAdd cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
-	hi DiffDelete cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
-	hi DiffChange cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=bg guibg=Red
-	hi DiffText cterm=bold ctermfg=white ctermbg=Red gui=none guifg=bg guibg=Red
+	hi DiffAdd    cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=White guibg=Blue
+	hi DiffDelete cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=White guibg=Blue
+	hi DiffChange cterm=bold ctermfg=white ctermbg=DarkBlue gui=none guifg=White guibg=Blue
+	hi DiffText   cterm=bold ctermfg=white ctermbg=Red      gui=none guifg=White guibg=Red
 
 	hi clear SpellBad
 	hi SpellBad cterm=underline gui=undercurl ctermfg=red guisp=red
